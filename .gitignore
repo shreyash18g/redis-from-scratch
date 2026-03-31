@@ -1,3 +1,11 @@
-build/
+# compiled binaries
+*.out
+*.exe
 *.o
-a.out
+
+# common binary names
+server
+client
+
+# build folders (future)
+build/
