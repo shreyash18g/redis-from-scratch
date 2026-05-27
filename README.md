@@ -1,4 +1,4 @@
-# Redis From Scratch (C++)
+# Redis From Scratch (C/C++)
 
 A Redis-like in-memory database being built completely from scratch using low-level systems programming and networking concepts in C++.
 
