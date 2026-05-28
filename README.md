@@ -2,168 +2,161 @@
 
 A Redis-like in-memory database being built completely from scratch using low-level systems programming and networking concepts in C++.
 
-This project focuses on deeply understanding how real-world systems like Redis work internally instead of using frameworks or high-level abstractions.
+This project focuses on understanding how real-world systems like Redis work internally by implementing networking, protocols, concurrency models, and core data structures manually instead of relying on high-level frameworks.
 
 ---
 
-# Project Goals
+# Goals
 
-The goal of this project is to learn and implement:
+This project is being built to deeply understand:
 
-- TCP/IP networking
-- Socket programming
-- Request-response protocols
-- Binary serialization
-- Event-driven architecture
-- Non-blocking IO
-- Concurrent server design
-- Buffer management
-- Custom data structures
-- Low-level systems programming
-
----
-
-# Why Build Redis From Scratch?
-
-Redis is much more than a key-value store.
-
-It is one of the best real-world examples of:
-
-- high-performance networking
-- event loops
-- protocol engineering
-- efficient memory usage
-- scalable concurrent systems
-
-Building it from scratch helps understand how production systems actually work internally.
+* TCP/IP networking
+* Socket programming
+* Request-response protocols
+* Binary serialization
+* Event-driven architecture
+* Non-blocking IO
+* Concurrent server design
+* Buffer management
+* Custom data structures
+* Systems programming fundamentals
 
 ---
 
 # Project Structure
 
-| Module | Description |
-|---|---|
-| 01_tcp_server_client | Basic TCP client-server communication |
-| 02_request_response_protocol | Custom binary protocol over TCP |
-| 03_event_loop_server | Non-blocking event-driven server |
-| 04_key_value_server | Redis-like command parsing and KV storage |
+| Module                       | Description                                 |
+| ---------------------------- | ------------------------------------------- |
+| 01_tcp_server_client         | Basic TCP client-server communication       |
+| 02_request_response_protocol | Custom binary protocol over TCP             |
+| 03_event_loop_server         | Non-blocking event-driven server            |
+| 04_key_value_server          | Redis-like command parsing and KV storage   |
+| 05_hashtable_kv_store        | Custom hashtable with progressive rehashing |
 
 ---
 
-# Learning Progression
-
-This project is being developed incrementally.
-
-Each module introduces one major systems programming concept and builds upon the previous implementation.
-
----
-
-## 01 — TCP Server Client
-
-Learned:
-
-- socket lifecycle
-- bind/listen/accept/connect
-- blocking IO
-- basic request-response communication
-
----
-
-## 02 — Request Response Protocol
-
-Learned:
-
-- TCP is a byte stream
-- message framing
-- length-prefixed protocols
-- partial reads/writes
-- serialization/deserialization
-
----
-
-## 03 — Event Loop Server
-
-Learned:
-
-- non-blocking IO
-- `poll()` syscall
-- readiness-based concurrency
-- per-connection state
-- pipelined requests
-- input/output buffering
-
----
-
-## 04 — Key Value Server
-
-Learned:
-
-- command parsing
-- structured binary requests
-- request pipelining
-- Redis-like protocol behavior
-- in-memory key-value handling
-
----
-
-# Core Concepts Implemented
+# Implemented Concepts
 
 ## Networking
 
-- TCP sockets
-- connection management
-- socket options
-- blocking vs non-blocking IO
-
----
-
-## Concurrency
-
-- event loops
-- readiness notifications
-- poll()
-- single-threaded concurrent servers
+* TCP sockets
+* bind / listen / accept / connect
+* blocking vs non-blocking IO
+* socket options
+* connection management
 
 ---
 
 ## Protocol Engineering
 
-- binary protocols
-- length-prefixed messages
-- request parsing
-- serialization/deserialization
+* custom binary protocols
+* request-response messaging
+* serialization/deserialization
+* length-prefixed message parsing
+* pipelined request handling
 
 ---
 
-## Buffer Management
+## Event-Driven Concurrency
 
-- incoming buffers
-- outgoing buffers
-- partial reads
-- partial writes
-- pipelined request handling
+* single-threaded event loop
+* `poll()` based readiness notifications
+* non-blocking reads/writes
+* per-connection state management
+* buffered IO
+
+---
+
+## Data Structures
+
+* custom chaining hashtable
+* intrusive linked-list nodes
+* progressive rehashing
+* incremental key migration
+
+---
+
+# Architecture Evolution
+
+## 01 — TCP Server Client
+
+Implemented:
+
+* socket lifecycle
+* blocking IO
+* basic request-response communication
+
+---
+
+## 02 — Request Response Protocol
+
+Implemented:
+
+* length-prefixed binary protocol
+* partial read/write handling
+* TCP stream parsing
+
+---
+
+## 03 — Event Loop Server
+
+Implemented:
+
+* non-blocking sockets
+* `poll()` based event loop
+* concurrent connection handling
+* input/output buffering
+* request pipelining
+
+---
+
+## 04 — Key Value Server
+
+Implemented:
+
+* command parsing
+* Redis-like request handling
+* structured binary requests
+* in-memory key-value operations
+
+---
+
+## 05 — Hashtable KV Store
+
+Implemented:
+
+* custom hashtable
+* chaining collision handling
+* progressive rehashing
+* incremental resizing
 
 ---
 
 # Technologies Used
 
-- C++
-- Linux socket APIs
-- TCP/IP
-- poll()
-- Non-blocking IO
-- g++
-- Git/GitHub
+* C++
+* Linux Socket APIs
+* TCP/IP
+* `poll()`
+* Non-blocking IO
+* g++
+* Git/GitHub
 
 ---
 
 # Build
 
-Compile any module:
+Compile a module:
 
 ```bash
 g++ server.cpp -o server
 g++ client.cpp -o client
+```
+
+Example with multiple files:
+
+```bash
+g++ server.cpp hashtable.cpp -o server
 ```
 
 ---
@@ -172,19 +165,17 @@ g++ client.cpp -o client
 
 Planned features:
 
-- custom hash table
-- TTL expiration
-- timers
-- thread pool
-- sorted sets
-- balanced trees
-- persistence
-- optimized memory management
+* TTL expiration
+* timers
+* thread pool
+* balanced trees
+* sorted sets
+* persistence
+* optimized buffer management
+* RESP protocol compatibility
 
 ---
 
 # Key Takeaway
 
-This project is focused on understanding systems programming fundamentals deeply by implementing them manually instead of relying on libraries or frameworks.
-
----
+The focus of this project is not just building a Redis clone, but understanding the low-level systems concepts that power modern high-performance backend infrastructure.
