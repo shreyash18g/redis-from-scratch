@@ -1,8 +1,8 @@
 # Redis From Scratch (C/C++)
 
-A Redis-like in-memory database being built completely from scratch using low-level systems programming and networking concepts in C++.
+A Redis-like in-memory database built completely from scratch using low-level systems programming and networking concepts in C++.
 
-This project focuses on understanding how real-world systems like Redis work internally by implementing networking, protocols, concurrency models, and core data structures manually instead of relying on high-level frameworks.
+The goal of this project is to understand how high-performance systems like Redis work internally by implementing networking, protocols, concurrency models, serialization, and core data structures manually without relying on frameworks.
 
 ---
 
@@ -25,13 +25,14 @@ This project is being built to deeply understand:
 
 # Project Structure
 
-| Module                       | Description                                 |
-| ---------------------------- | ------------------------------------------- |
-| 01_tcp_server_client         | Basic TCP client-server communication       |
-| 02_request_response_protocol | Custom binary protocol over TCP             |
-| 03_event_loop_server         | Non-blocking event-driven server            |
-| 04_key_value_server          | Redis-like command parsing and KV storage   |
-| 05_hashtable_kv_store        | Custom hashtable with progressive rehashing |
+| Module                       | Description                                      |
+| ---------------------------- | ------------------------------------------------ |
+| 01_tcp_server_client         | Basic TCP client-server communication            |
+| 02_request_response_protocol | Custom binary protocol over TCP                  |
+| 03_event_loop_server         | Non-blocking event-driven server                 |
+| 04_key_value_server          | Redis-like command parsing and key-value storage |
+| 05_hashtable_kv_store        | Custom hashtable with progressive rehashing      |
+| 06_data_serialization        | Binary serialization for typed Redis responses   |
 
 ---
 
@@ -41,7 +42,7 @@ This project is being built to deeply understand:
 
 * TCP sockets
 * bind / listen / accept / connect
-* blocking vs non-blocking IO
+* blocking and non-blocking IO
 * socket options
 * connection management
 
@@ -51,8 +52,8 @@ This project is being built to deeply understand:
 
 * custom binary protocols
 * request-response messaging
-* serialization/deserialization
-* length-prefixed message parsing
+* length-prefixed message framing
+* serialization and deserialization
 * pipelined request handling
 
 ---
@@ -60,8 +61,8 @@ This project is being built to deeply understand:
 ## Event-Driven Concurrency
 
 * single-threaded event loop
-* `poll()` based readiness notifications
-* non-blocking reads/writes
+* poll()-based readiness notifications
+* non-blocking reads and writes
 * per-connection state management
 * buffered IO
 
@@ -73,6 +74,18 @@ This project is being built to deeply understand:
 * intrusive linked-list nodes
 * progressive rehashing
 * incremental key migration
+
+---
+
+## Data Serialization
+
+* typed binary responses
+* TLV-style serialization
+* strings
+* integers
+* arrays
+* errors
+* null values
 
 ---
 
@@ -103,7 +116,7 @@ Implemented:
 Implemented:
 
 * non-blocking sockets
-* `poll()` based event loop
+* poll()-based event loop
 * concurrent connection handling
 * input/output buffering
 * request pipelining
@@ -132,15 +145,28 @@ Implemented:
 
 ---
 
+## 06 — Data Serialization
+
+Implemented:
+
+* typed response protocol
+* binary serialization
+* array responses
+* error responses
+* null handling
+* dynamic response generation
+
+---
+
 # Technologies Used
 
 * C++
 * Linux Socket APIs
 * TCP/IP
-* `poll()`
+* poll()
 * Non-blocking IO
 * g++
-* Git/GitHub
+* Git / GitHub
 
 ---
 
@@ -153,7 +179,7 @@ g++ server.cpp -o server
 g++ client.cpp -o client
 ```
 
-Example with multiple files:
+Modules containing additional source files:
 
 ```bash
 g++ server.cpp hashtable.cpp -o server
@@ -165,11 +191,12 @@ g++ server.cpp hashtable.cpp -o server
 
 Planned features:
 
+* balanced binary trees
+* sorted sets
 * TTL expiration
 * timers
 * thread pool
-* balanced trees
-* sorted sets
+* cache eviction
 * persistence
 * optimized buffer management
 * RESP protocol compatibility
@@ -178,4 +205,4 @@ Planned features:
 
 # Key Takeaway
 
-The focus of this project is not just building a Redis clone, but understanding the low-level systems concepts that power modern high-performance backend infrastructure.
+The objective of this project is not only to build a Redis clone, but to gain a deep understanding of the networking, concurrency, protocol design, serialization, and data structure techniques that power modern high-performance backend systems.
