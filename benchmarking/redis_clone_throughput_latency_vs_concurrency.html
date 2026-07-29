@@ -1,0 +1,96 @@
+<div style="margin-bottom: 2rem;">
+  <p style="font-size: 13px; color: var(--text-secondary); margin: 0 0 8px;">Throughput vs concurrent connections (mixed 80/20 GET/SET workload)</p>
+  <div style="position: relative; width: 100%; height: 260px;">
+    <canvas id="throughputChart" role="img" aria-label="Line chart of throughput in requests per second across concurrency levels 1, 10, 50, 100, 250, 500, 1000. Throughput rises from 23489 at concurrency 1 to a peak of 32744 at concurrency 100, then declines to 26856 at concurrency 1000.">Throughput (ops/sec) by concurrency: 1→23489, 10→27280, 50→29929, 100→32744 (peak), 250→31357, 500→27281, 1000→26856.</canvas>
+  </div>
+</div>
+
+<div>
+  <p style="font-size: 13px; color: var(--text-secondary); margin: 0 0 8px;">p50 / p99 latency vs concurrent connections</p>
+  <div style="position: relative; width: 100%; height: 260px;">
+    <canvas id="latencyChart" role="img" aria-label="Line chart of p50 and p99 latency in milliseconds across the same concurrency levels. Latency rises steadily from under 0.1ms at concurrency 1 to about 36ms p50 and 46ms p99 at concurrency 1000.">Latency (ms) by concurrency: p50 1→0.033, 10→0.347, 50→1.589, 100→2.975, 250→7.9, 500→17.981, 1000→35.921. p99 1→0.078, 10→0.761, 50→2.411, 100→3.698, 250→9.325, 500→23.379, 1000→45.599.</canvas>
+  </div>
+  <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-size: 12px; color: var(--text-secondary);">
+    <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #2a78d6;"></span>p50 latency</span>
+    <span style="display: flex; align-items: center; gap: 4px;"><span style="width: 10px; height: 10px; border-radius: 2px; background: #e34948;"></span>p99 latency</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const labels = ['1','10','50','100','250','500','1000'];
+const throughput = [23489.0, 27280.2, 29928.9, 32744.5, 31356.5, 27281.4, 26855.9];
+const p50 = [0.033, 0.347, 1.589, 2.975, 7.9, 17.981, 35.921];
+const p99 = [0.078, 0.761, 2.411, 3.698, 9.325, 23.379, 45.599];
+
+new Chart(document.getElementById('throughputChart'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: 'Throughput',
+      data: throughput,
+      borderColor: '#2a78d6',
+      backgroundColor: 'rgba(42,120,214,0.1)',
+      fill: true,
+      borderWidth: 2,
+      pointRadius: 4,
+      pointBackgroundColor: '#2a78d6',
+      pointBorderColor: '#fcfcfb',
+      pointBorderWidth: 2,
+      tension: 0.25
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: 'concurrent connections', color: '#898781', font: { size: 12 } }, grid: { display: false }, ticks: { color: '#898781' } },
+      y: { title: { display: true, text: 'requests / sec', color: '#898781', font: { size: 12 } }, grid: { color: '#e1e0d9' }, ticks: { color: '#898781' }, beginAtZero: true }
+    }
+  }
+});
+
+new Chart(document.getElementById('latencyChart'), {
+  type: 'line',
+  data: {
+    labels: labels,
+    datasets: [
+      {
+        label: 'p50',
+        data: p50,
+        borderColor: '#2a78d6',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: '#2a78d6',
+        pointBorderColor: '#fcfcfb',
+        pointBorderWidth: 2,
+        tension: 0.25
+      },
+      {
+        label: 'p99',
+        data: p99,
+        borderColor: '#e34948',
+        borderDash: [6, 3],
+        borderWidth: 2,
+        pointRadius: 4,
+        pointStyle: 'rectRot',
+        pointBackgroundColor: '#e34948',
+        pointBorderColor: '#fcfcfb',
+        pointBorderWidth: 2,
+        tension: 0.25
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { title: { display: true, text: 'concurrent connections', color: '#898781', font: { size: 12 } }, grid: { display: false }, ticks: { color: '#898781' } },
+      y: { title: { display: true, text: 'latency (ms)', color: '#898781', font: { size: 12 } }, grid: { color: '#e1e0d9' }, ticks: { color: '#898781' }, beginAtZero: true }
+    }
+  }
+});
+</script>
